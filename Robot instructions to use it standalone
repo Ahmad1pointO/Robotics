@@ -1,3 +1,17 @@
+Create the workspace and package 
+1-create Workspac and package using this command 
+-->mkdir ros2_ws/src
+2-Build colcon in the workspace ros2_ws as --> colcon build
+3-add the workspcae to the .bashrc file as --> gedit ~/.bashrc
+in the src folder after colcon build there are four files  """ build  install  log  src """ created
+4-create package as --> ros2 pkg create <name_of_the_package> 
+(As in my case it is as -->ros2 pkg create my_robot_description )
+5-in the my_robot_description package these folder and files will be created """ CMakeLists.txt  include  package.xml  src """ 
+fro these just remove folders. as in here these are "include" and "src" as -->rm -rf include/ src/
+6-Tehn create "urdf" named folder in the same directory (my_robot_description) as --> mkdir urdf
+7-make the urdf in this folder or copy here urdf files.
+
+////////////////////////////////////////////////////
 run the urdf file without using urdf_tutorial package (First go to th urdf folder in terminal and then run this command) go to workspace and run "colcon build" and "source install/setup.bash"and then:
 Command1 run the robot model:  ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_description:="$(xacro robot.urdf )"
 
@@ -50,6 +64,11 @@ then spawn the robot entity in the gazebo enviroment
 --> ros2 run gazebo_ros spawn_entity.py -topic robot_description -entity <Name_of_urdf_file_without_it's_extension>
 like in my case it is as "ros2 run gazebo_ros spawn_entity.py -topic robot_description -entity my_robot"
 
+
+To run the whole project run this command
+--> ros2 launch <robot package name here> <launch file name here> 
+AS in my case it is (ros2 launch my_robot_bringup my_robot_gazebo.launch.xml)
+
 to move the robot on the predefined motion inputs we can give this command by changing the parameters to get required motion (like below the rbot move in inear x axis with 0.5 m/s velocity)
 -->ros2 topic pub /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.5, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}"
 
@@ -66,10 +85,22 @@ if you want to get pdf of the tree of the links and joints hirerachy
 
 
 
-To move the robot joints to the desired positions, use joint controllers
+To move the robot joints to the desired positions, use joint controllers (for robotics arm here) 
 -->ros2 topic pub -1 /set_joint_trajectory trajectory_msgs/msg/JointTrajectory '{header: {frame_id: arm_base_link}, joint_names: [base_forearm_joint, forearm_hand_joint], points: [ {positions: {0.2, 0.9}} ]}'
 
 
+To remove the folder from the git 
+--> rm -rf ~/Robotics/ros2_ws/.git
+To copy the folder to another location
+-->cp -r ~/ros2_ws ~/Robotics/
+
+
+
+to update the changes in the github
+cd ~/Robotics
+git add .  (or with folder name as->) git add ros2_ws
+git commit -m "Add ros2_ws workspace"
+git push
 
 
 
